@@ -2,15 +2,69 @@
 
 $pag = $_GET['p'] ?? 1; // pagina attuale
 $elemPerPag = $_GET['e'] ?? 10; // elementi per pagina
+$decrescente = $_GET['decrescente'] ?? false;
+unset($_GET['decrescente']);
+$elemento = $_GET['elemento'] ?? 'none';
+unset($_GET['elemento']);
 
 $dbh = new PDO('mysql:host=192.168.245.1;dbname=dbcrud', 'root', '');
+$querySort = '';
+switch($elemento)
+{
+    case 'nome':
+        $querySort = "order by Nome";
+        if($decrescente)
+        {
+            $querySort .= " desc";
+        }
+    break;
+    case 'cognome':
+        $querySort = "order by Cognome";
+        if($decrescente)
+        {
+            $querySort .= " desc";
+        }
+    break;
+    case 'dataNascita':
+        $querySort = "order by DataNascita";
+        if($decrescente)
+        {
+            $querySort .= " desc";
+        }
+    break;
+    case 'sesso':
+        $querySort = "order by Sesso";
+        if($decrescente)
+        {
+            $querySort .= " desc";
+        }
+    break;
+    case 'reddito':
+        $querySort = "order by Reddito";
+        if($decrescente)
+        {
+            $querySort .= " desc";
+        }
+    break;
+    default:
+    break;
+}
 
-$sth = $dbh->query("SELECT * FROM tblpersone;");
+$sth = $dbh->query("SELECT * FROM tblpersone ".$querySort.";");
 $records = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 $pagMax = ceil(count($records)/ $elemPerPag);
 if($pag > $pagMax) $pag = $pagMax;
 if($pag < 1) $pag = 1;
+
+
+
+$icone = [
+    'alpha' => 'fa-sort-alpha',
+    'numeric' => 'fa-sort-numeric',
+    'amount' => 'fa-sort-amount'
+];
+
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -41,11 +95,11 @@ if($pag < 1) $pag = 1;
         <table class="table table-striped text-center table-sm">
             <thead class="table-bordered">
                 <tr class="row">
-                    <th class="col-2" scope="col">Nome<i id="sortNome" class="pointer sort ml-2 fas fa-sort selected"></i></th>
-                    <th class="col-2" scope="col">Cognome<i id="sortCognome" class="pointer sort ml-2 fas fa-sort"></i></th>
-                    <th class="col-2" scope="col">Nascita<i id="sortNascita" class="pointer sort ml-2 fas fa-sort"></i></th>
-                    <th class="col-2" scope="col">Reddito<i id="sortReddito" class="pointer sort ml-2 fas fa-sort"></i></th>
-                    <th class="col-2" scope="col">Sesso<i id="sortSesso" class="pointer sort ml-2 fas fa-sort"></i></th>
+                    <th class="col-2" scope="col">Nome<a href="index.php?elemento=nome<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortNome" class="pointer sort ml-2 fas <?php echo ($elemento == 'nome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Cognome<a href="index.php?elemento=cognome<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortCognome" class="pointer sort ml-2 fas <?php echo ($elemento == 'cognome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Nascita<a href="index.php?elemento=dataNascita<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortNascita" class="pointer sort ml-2 fas <?php echo ($elemento == 'dataNascita' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Reddito<a href="index.php?elemento=reddito<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortReddito" class="pointer sort ml-2 fas <?php echo ($elemento == 'reddito' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Sesso<a href="index.php?elemento=sesso<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortSesso" class="pointer sort ml-2 fas <?php echo ($elemento == 'sesso' ? $icone['amount'].($decrescente ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
                     <th class="col-2" scope="col">Comandi</th>
                 </tr>
             </thead>
@@ -60,7 +114,7 @@ if($pag < 1) $pag = 1;
 <tr class="record row">
     <td class="col-2" data-title="Nome">'.$record['Nome'].'</td>
     <td class="col-2" data-title="Cognome">'.$record['Cognome'].'</td>
-    <td class="col-2" data-title="Nascita">'.date_format(date_create_from_format('Ymd', $record['DataNascita']), 'd/m/Y').'</td>
+    <td class="col-2" data-title="Nascita">'.date_format(date_create_from_format('Ymd', str_pad($record['DataNascita'],8,"0", STR_PAD_LEFT)), 'd/m/Y').'</td>
     <td class="col-2" data-title="Reddito">'.$record['Reddito'].'</td>
     <td class="col-2" data-title="Sesso">'.$record['Sesso'].'</td>
     <td class="col-2" data-title="Comandi">
