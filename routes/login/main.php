@@ -22,8 +22,9 @@ if(!empty($res)) {
     $idSessione = bin2hex(random_bytes(32));
     setcookie('logged_user', $idSessione, time() + (86400 * 30), "/");
     $idh = $dbh->prepare('INSERT INTO tblsessioni VALUES(?, ?);');
-    $idh->execute([$res['FKIdPersona'], $idSessione]);
-    header("location: /routes/home");
+    $idh->execute([$_POST['username'], $idSessione]);
+    header("location: /DB-CRUD/routes/home/index.php");
+
 }
 else {
     //non esiste
