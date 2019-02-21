@@ -105,8 +105,6 @@ $icone = [
             </thead>
             <tbody id="records">
                 <?php
-
-
                 $slice = array_slice($records, ($pag - 1) * $elemPerPag, $elemPerPag);
 
                 foreach($slice as $record) {
@@ -217,10 +215,10 @@ $icone = [
                                         <span class="input-group-text">€</span>
                                     </div>
                                     <select class="form-control" id="reddito" name="reddito">
-                                        <option value="Basso">1000-2000</option>
-                                        <option value="Medio">2000-3000</option>
-                                        <option value="Alto">3000-4000</option>
-                                        <option value="Atissimo">4000 o più</option>
+                                        <option value="10000">Fino a 10000</option>
+                                        <option value="20000">10-25000</option>
+                                        <option value="30000">25-40000</option>
+                                        <option value="40000">Più di 40000</option>
                                     </select>
                                 </div>
                             </div>

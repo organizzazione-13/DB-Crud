@@ -33,11 +33,12 @@ $('#entryForm').on('show.bs.modal', function (event) {
         $('#titoloModalForm').text('Aggiungi nuova persona');
     } else { // Modifica riga
         $('#titoloModalForm').text('Modifica i dati inseriti');
+        $('#formGestioneRighe').attr('action', 'modifica_riga.php');
     }
     $('#nome').val('');
     $('#cognome').val('');
     $('#nascita').val('');
-    $('#reddito').val('Basso');
+    $('#reddito').val('10000');
     $('#sesso').val('M');
     $('#nascita').val('1970-01-01');
     $('#scopo').val(id);
