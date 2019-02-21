@@ -1,4 +1,4 @@
-<!doctype html>
+  <!doctype html>
 <html lang="en">
 
 <head>
@@ -16,6 +16,14 @@
     <div class="container">
       <h1>Registrazione</h1>
       <p>Riempire tutti i campi per crare un account</p>
+                                  <div id="errore"><?php
+                            if(isset($_GET['err']))
+                            echo "
+<div class=\"alert alert-danger\" role=\"alert\">
+\t".urldecode($_GET['err'])."
+</div>
+";
+                            ?></div>
       <hr>
       <label for="username"><b>Username</b></label>
       <input type="text" placeholder="Inserire Username" name="username" required>

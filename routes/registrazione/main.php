@@ -14,11 +14,9 @@ try {
             header("location: /DB-CRUD/routes/home/index.php");
         break;
         default:
-        echo "Errore: " . $err[2];
-        die();
+    header("location: index.php?err=C'è stato un errore, riprova");
     }
 } catch (Exception $e) {
-    echo "Errore: " . $e->getMessage();
-    die();
+    header("location: index.php?err=".$e->getMessage());
 }
 ?>
