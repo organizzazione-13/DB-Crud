@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   </head>
   <body>
-    <form autocomplete="off" action="action_page.php">
+    <form method="POST" autocomplete="off" action="main.php">
         <div class="container">
           <h1>Registrazione</h1>
           <p>Riempire tutti i campi per crare un account</p>
@@ -21,11 +21,9 @@
           <label for="username"><b>Username</b></label>
           <input type="text" placeholder="Inserire Username" name="username" required>
       
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Inserire Password" name="psw" required>
+          <label for="password"><b>Password</b></label>
+          <input type="password" placeholder="Inserire Password" name="password" required>
       
-          <label for="psw-repeat"><b>Reinserire Password</b></label>
-          <input type="password" placeholder="Reinserire Password" name="psw-repeat" required>
           <hr>
       
           <button type="submit" class="registerbtn">Registrazione</button>
