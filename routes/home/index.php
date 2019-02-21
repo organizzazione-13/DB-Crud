@@ -1,5 +1,13 @@
 <?php
+$dbh = new PDO('mysql:host=192.168.245.1;dbname=dbcrud', 'root', '');
 
+if(!isset($_COOKIE['logged_user']))
+    header("location: DB-CRUD/routes/login/index.php?err=Devi prima effettuare l'accesso");
+
+$controlloUtente = $dbh->prepare('SELECT FKUsername FROM tblsessioni WHERE IdSessione = ?;');
+$controlloUtente->execute([$_COOKIE['logged_user']]);
+if(!$controlloUtente->fetch(PDO::FETCH_ASSOC))
+    header("location: /DB-CRUD/routes/login/index.php?err=Sessione non valida");
 $pag = $_GET['p'] ?? 1; // pagina attuale
 $elemPerPag = $_GET['e'] ?? 10; // elementi per pagina
 $decrescente = $_GET['decrescente'] ?? false;
@@ -7,7 +15,6 @@ unset($_GET['decrescente']);
 $elemento = $_GET['elemento'] ?? 'none';
 unset($_GET['elemento']);
 
-$dbh = new PDO('mysql:host=192.168.245.1;dbname=dbcrud', 'root', '');
 $querySort = '';
 switch($elemento)
 {
