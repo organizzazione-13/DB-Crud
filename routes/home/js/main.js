@@ -10,8 +10,7 @@ $('.needs-validation').on('submit', function (event) {
         event.preventDefault();
         event.stopPropagation();
     } else {
-        salvaForm();
-        $('.needs-validation')[0].classList.remove('was-validated');
+        $('.needs-validation').submit();
         return;
     }
     $('.needs-validation')[0].classList.add('was-validated');
@@ -29,11 +28,17 @@ $('#entryForm').on('show.bs.modal', function (event) {
     var id = $(event.relatedTarget).data('scopo');
     console.log(id)
     if (id == 'new') { // Nuova riga
+        $('.needs-validation')[0].classList.remove('was-validated');
+        $('#formGestioneRighe').attr('action', 'aggiungi_riga.php');
         $('#titoloModalForm').text('Aggiungi nuova persona');
     } else { // Modifica riga
         $('#titoloModalForm').text('Modifica i dati inseriti');
     }
-    $('#bodyModalForm input').val('');
+    $('#nome').val('');
+    $('#cognome').val('');
+    $('#nascita').val('');
+    $('#reddito').val('Basso');
+    $('#sesso').val('M');
     $('#nascita').val('1970-01-01');
     $('#scopo').val(id);
 });

@@ -64,7 +64,7 @@ if($pag < 1) $pag = 1;
     <td class="col-2" data-title="Reddito">'.$record['Reddito'].'</td>
     <td class="col-2" data-title="Sesso">'.$record['Sesso'].'</td>
     <td class="col-2" data-title="Comandi">
-        <span data-toggle="modal" data-target="#entryForm" data-scopo="'.'">
+        <span data-toggle="modal" data-target="#entryForm" data-scopo="'.$record['Idpersona'].'">
             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="left" title="Modifica"><i class="fas fa-edit"></i></button>
         </span>
         <span data-toggle="modal" data-target="#confermaEliminazione" data-scopo="'.$record['Idpersona'].'">
@@ -120,15 +120,16 @@ if($pag < 1) $pag = 1;
                 <div class="modal-header">
                     <h5 class="modal-title container-fluid text-center" id="titoloModalForm">placeholder</h5>
                 </div>
-                <form class="needs-validation" novalidate onsubmit="return false;">
+                <form id="formGestioneRighe" class="needs-validation" method="POST" novalidate>
                     <div class="modal-body" id="bodyModalForm">
-                        <input type="hidden" class="form-control" id="scopo" />
+                        <input type="hidden" class="form-control" id="scopo" name="scopo">
+                        <input type="hidden" name="params" value='<?php echo http_build_query($_GET); ?>'>
                         <div class="form-group row justify-content-between">
                             <label class="col-3 col-form-label">Nome</label>
                             <div class="col-7">
                                 <!--inserisce la textbox  e controlla che i campi non siano vuoti o con valori non accettabili -->
-                                <input type="text" class="form-control" id="nome" minlength="2" maxlength="30" pattern="[a-zA-Z .']+"
-                                    required>
+                                <input type="text" class="form-control" id="nome" name="nome" minlength="2" maxlength="45"
+                                    pattern="[a-zA-Z .']+" required>
                                 <div class="invalid-feedback">
                                     Inserisci un nome valido.
                                 </div>
@@ -138,8 +139,8 @@ if($pag < 1) $pag = 1;
                             <label class="col-3 col-form-label">Cognome</label>
                             <div class="col-7">
                                 <!--inserisce la textbox  e controlla che i campi non siano vuoti o con valori non accettabili -->
-                                <input type="text" class="form-control" id="cognome" minlength="2" maxlength="30"
-                                    pattern="[a-zA-Z .']+" required>
+                                <input type="text" class="form-control" id="cognome" name="cognome" minlength="2"
+                                    maxlength="45" pattern="[a-zA-Z .']+" required>
                                 <div class="invalid-feedback">
                                     Inserisci un cognome valido.
                                 </div>
@@ -148,7 +149,7 @@ if($pag < 1) $pag = 1;
                         <div class="form-group row justify-content-between">
                             <label class="col-3 col-form-label">Nascita</label>
                             <div class="col-7">
-                                <input type="date" class="form-control" id="nascita" required>
+                                <input type="date" class="form-control" id="nascita" name="dataNascita" required>
                                 <div class="invalid-feedback">
                                     Inserisci una data valida.
                                 </div>
@@ -161,11 +162,11 @@ if($pag < 1) $pag = 1;
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">€</span>
                                     </div>
-                                    <select class="form-control" id="reddito">
-                                        <option value="basso">1000-2000</option>
-                                        <option value="medio">2000-3000</option>
-                                        <option value="alto">3000-4000</option>
-                                        <option value="altissimo">4000 o più</option>
+                                    <select class="form-control" id="reddito" name="reddito">
+                                        <option value="Basso">1000-2000</option>
+                                        <option value="Medio">2000-3000</option>
+                                        <option value="Alto">3000-4000</option>
+                                        <option value="Atissimo">4000 o più</option>
                                     </select>
                                 </div>
                             </div>
@@ -174,9 +175,9 @@ if($pag < 1) $pag = 1;
                             <label class="col-3 col-form-label">Sesso</label>
                             <div class="col-7">
                                 <div class="input-group">
-                                    <select class="form-control" id="sesso">
-                                        <option value="uomo">Uomo</option>
-                                        <option value="donna">Donna</option>
+                                    <select class="form-control" id="sesso" name="sesso">
+                                        <option value="M">Uomo</option>
+                                        <option value="F">Donna</option>
                                     </select>
                                 </div>
                             </div>
