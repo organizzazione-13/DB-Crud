@@ -102,11 +102,11 @@ $icone = [
         <table class="table table-striped text-center table-sm">
             <thead class="table-bordered">
                 <tr class="row">
-                    <th class="col-2" scope="col">Nome<a href="index.php?elemento=nome<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortNome" class="pointer sort ml-2 fas <?php echo ($elemento == 'nome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
-                    <th class="col-2" scope="col">Cognome<a href="index.php?elemento=cognome<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortCognome" class="pointer sort ml-2 fas <?php echo ($elemento == 'cognome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
-                    <th class="col-2" scope="col">Nascita<a href="index.php?elemento=dataNascita<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortNascita" class="pointer sort ml-2 fas <?php echo ($elemento == 'dataNascita' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
-                    <th class="col-2" scope="col">Reddito<a href="index.php?elemento=reddito<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortReddito" class="pointer sort ml-2 fas <?php echo ($elemento == 'reddito' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
-                    <th class="col-2" scope="col">Sesso<a href="index.php?elemento=sesso<?php if(!$decrescente) echo '&decrescente=true'; echo http_build_query($_GET); ?>"><i id="sortSesso" class="pointer sort ml-2 fas <?php echo ($elemento == 'sesso' ? $icone['amount'].($decrescente ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Nome<a href="index.php?elemento=nome&<?php if(!$decrescente) echo 'decrescente=true&'; echo http_build_query($_GET); ?>"><i id="sortNome" class="pointer sort ml-2 fas <?php echo ($elemento == 'nome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Cognome<a href="index.php?elemento=cognome&<?php if(!$decrescente) echo 'decrescente=true&'; echo http_build_query($_GET); ?>"><i id="sortCognome" class="pointer sort ml-2 fas <?php echo ($elemento == 'cognome' ? $icone['alpha'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Nascita<a href="index.php?elemento=dataNascita&<?php if(!$decrescente) echo 'decrescente=true&'; echo http_build_query($_GET); ?>"><i id="sortNascita" class="pointer sort ml-2 fas <?php echo ($elemento == 'dataNascita' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Reddito<a href="index.php?elemento=reddito&<?php if(!$decrescente) echo 'decrescente=true&'; echo http_build_query($_GET); ?>"><i id="sortReddito" class="pointer sort ml-2 fas <?php echo ($elemento == 'reddito' ? $icone['numeric'].($decrescente  ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
+                    <th class="col-2" scope="col">Sesso<a href="index.php?elemento=sesso&<?php if(!$decrescente) echo 'decrescente=true&'; echo http_build_query($_GET); ?>"><i id="sortSesso" class="pointer sort ml-2 fas <?php echo ($elemento == 'sesso' ? $icone['amount'].($decrescente ? '-up' : '-down') : 'fa-sort'); ?>"></i></th>
                     <th class="col-2" scope="col">Comandi</th>
                 </tr>
             </thead>
@@ -147,18 +147,18 @@ $icone = [
         <?php echo $pag; ?></button>
     <!--Istanziazione del paginatore-->
     <div id="sortExpanded">
-        <a href="index.php?p=1&e=<?php echo $elemPerPag; ?>"><button type="button" id="firstPage" class="btn btn-outline-dark navigation">&laquo;</button></a>
-        <a href="index.php?p=<?php echo ($pag > 1  ? $pag - 1 : 1); ?>&e=<?php echo $elemPerPag; ?>"><button type="button"
+        <a href="index.php?p=1&e=<?php echo $elemPerPag.'&'.http_build_query($_GET); ?>"><button type="button" id="firstPage" class="btn btn-outline-dark navigation">&laquo;</button></a>
+        <a href="index.php?p=<?php echo ($pag > 1  ? $pag - 1 : 1); ?>&e=<?php echo $elemPerPag.'&'.http_build_query($_GET); ?>"><button type="button"
                 id="previousPage" class="btn btn-outline-dark navigation expandedButton">&lt;</button></a>
         <?php
             for($i = $pag - 2; $i <= $pag + 2; $i++) {
                 if($i != $pag && $i > 0 && $i <= $pagMax)
-                    echo '<a href="index.php?p='.$i.'&e='.$elemPerPag.'"><button type="button" class="btn btn-outline-dark navigation expandedButton pageButton">'.$i.'</button></a>';
+                    echo '<a href="index.php?p='.$i.'&e='.$elemPerPag.'&'.http_build_query($_GET).'"><button type="button" class="btn btn-outline-dark navigation expandedButton pageButton">'.$i.'</button></a>';
             }
         ?>
-        <a href="index.php?p=<?php echo ($pag < $pagMax ? $pag + 1 : $pag); ?>&e=<?php echo $elemPerPag; ?>"><button
+        <a href="index.php?p=<?php echo ($pag < $pagMax ? $pag + 1 : $pag); ?>&e=<?php echo $elemPerPag.'&'.http_build_query($_GET); ?>"><button
                 type="button" id="nextPage" class="btn btn-outline-dark navigation expandedButton">&gt;</button></a>
-        <a href="index.php?p=<?php echo $pagMax; ?>&e=<?php echo $elemPerPag; ?>"><button type="button" id="lastPage"
+        <a href="index.php?p=<?php echo $pagMax; ?>&e=<?php echo $elemPerPag.'&'.http_build_query($_GET); ?>"><button type="button" id="lastPage"
                 class="btn btn-outline-dark navigation">&raquo;</button></a>
     </div>
 

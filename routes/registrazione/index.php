@@ -15,7 +15,6 @@
   <form method="POST" autocomplete="off" action="main.php">
     <div class="container">
       <h1>Registrazione</h1>
-      <p>Riempire tutti i campi per crare un account</p>
                                   <div id="errore"><?php
                             if(isset($_GET['err']))
                             echo "
