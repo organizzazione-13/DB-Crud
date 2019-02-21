@@ -1,103 +1,7 @@
-// Dichiaro la classe persona con gli attributi pubblici
-class Persona {
-    constructor(_nome, _cognome, _nascita, _reddito, _sesso) {
-        this.nome = _nome;
-        this.cognome = _cognome;
-        if (_nascita.includes('/')) {
-            this.nascita = _nascita;
-        } else {
-            this.dataFormattata = _nascita;
-        }
-        this.reddito = _reddito;
-        this.sesso = _sesso;
-    }
-
-    redditoNum() {
-        switch (this.reddito) {
-            case 'basso':
-                return '1000-2000 €';
-            case 'medio':
-                return '2000-3000 €';
-            case 'alto':
-                return '3000-4000 €';
-            case 'altissimo':
-                return '4000 o più €';
-        }
-    }
-
-    get dataFormattata() {
-        var nascita = this.nascita.split('/');
-        return nascita[2] + "-" + nascita[1] + "-" + nascita[0];
-    }
-
-    set dataFormattata(val) {
-        var nascita = val.split("-");
-        this.nascita = nascita[2] + "/" + nascita[1] + "/" + nascita[0];
-    }
-
-    redditoVal() {
-        switch (this.reddito) {
-            case 'basso':
-                return '1';
-            case 'medio':
-                return '2';
-            case 'alto':
-                return '3';
-            case 'altissimo':
-                return '4';
-        }
-    }
-
-    sessoNum() {
-        switch (this.sesso) {
-            case 'uomo':
-                return 1;
-            case 'donna':
-                return 2;
-        }
-    }
-}
-
-// Istanzio l'array di persone
-var persone = [
-    new Persona("Jotaro", "Kujo", "01/02/1970", "medio", "uomo"),
-    new Persona("Giorno", "Giovanna", "16/04/1985", "altissimo", "uomo"),
-    new Persona("Joseph", "Joestar", "22/09/1920", "alto", "uomo"),
-    new Persona("Jolyne", "Cujoh", "14/06/1992", "basso", "donna"),
-    new Persona("Josuke", "Higashicata", "23/05/1983", "basso", "uomo"),
-    new Persona("Johnny", "Joestar", "09/01/1871", "altissimo", "uomo"),
-    new Persona("Jonathan", "Joestar", "04/04/1868", "basso", "uomo"),
-    new Persona("Dio", "Brando", "01/02/1868", "basso", "uomo"),
-    new Persona("Sora", "Keys", "28/03/2003", "basso", "uomo"),
-    new Persona("Kairi", "Baragona", "08/12/2003", "altissimo", "donna"),
-
-    new Persona("Mario", "Rossi", "01/01/1970", "basso", "uomo"),
-    new Persona("Adriano", "Celentano", "01/01/1745", "altissimo", "uomo"),
-    new Persona("Maria", "De Filippi", "01/01/1870", "alto", "uomo"),
-    new Persona("Pino", "Bianchi", "01/01/1989", "basso", "uomo"),
-    new Persona("Ciccio", "Franco", "01/01/1950", "medio", "uomo"),
-    new Persona("Mario", "Verdi", "01/01/1970", "altissimo", "uomo"),
-    new Persona("Marco", "Antonio", "01/01/1940", "alto", "uomo"),
-];
-var personePage = [];
-var personeCercate;
-var sort = {
-    'cosa': 'nome',
-    'invertito': false
-};
-var prevSearch = '';
-var page = 1;
-var resultsPerPage = 13;
-
 // Appena la pagina si sarà caricata
 $().ready(function () {
-    search();
-    updatePage(1);
     $('#sortExpanded').css('display', 'none');
     $('#sortExpanded').css('opacity', 1);
-    // sortBy('cognome')
-    // Aggiorno il contenuto della tabella
-    updateRecords();
 });
 
 // Controllo per i campi del form
@@ -123,31 +27,21 @@ $('#addEntry').hover(function () {
 // Modifico il form in base al pulsante premuto per aprirlo
 $('#entryForm').on('show.bs.modal', function (event) {
     var id = $(event.relatedTarget).data('scopo');
-
+    console.log(id)
     if (id == 'new') { // Nuova riga
         $('#titoloModalForm').text('Aggiungi nuova persona');
-        $('#bodyModalForm input').val('');
-        $('#nascita').val('1970-01-01');
     } else { // Modifica riga
         $('#titoloModalForm').text('Modifica i dati inseriti');
-        $('#nome').val(persone[id].nome);
-        $('#cognome').val(persone[id].cognome);
-        $('#nascita').val(persone[id].dataFormattata);
-        $('#reddito').val(persone[id].reddito);
-        $('#sesso').val(persone[id].sesso);
     }
+    $('#bodyModalForm input').val('');
+    $('#nascita').val('1970-01-01');
     $('#scopo').val(id);
 });
 
 // Modifico la riga del modal dell'eliminazione
 $('#confermaEliminazione').on('show.bs.modal', function (event) {
     var id = $(event.relatedTarget).data('scopo');
-    $('#delNome').text(persone[id].nome);
-    $('#delCognome').text(persone[id].cognome);
-    $('#delNascita').text(persone[id].nascita);
-    $('#delReddito').text(persone[id].redditoNum());
-    $('#delSesso').text(persone[id].sesso);
-    $($('#confermaEliminazione')).find('.delete').attr('onclick', `removeEntry(${id})`);
+    $('#rigaDaEliminare').val(id);
 });
 
 $('.sort').click(function (evt) {
@@ -309,7 +203,7 @@ function salvaForm() {
     sortedPersone = persone;
     $('#entryForm').modal('toggle');
     search();
-    return false;
+    return false; //EHI TU!
 }
 
 function sortBy(cosa, invertito) {

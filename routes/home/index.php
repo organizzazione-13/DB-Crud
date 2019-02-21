@@ -5,8 +5,8 @@ $elemPerPag = $_GET['e'] ?? 10; // elementi per pagina
 
 $dbh = new PDO('mysql:host=192.168.245.1;dbname=dbcrud', 'root', '');
 
-$rch = $dbh->query("SELECT * FROM tblpersone;");
-$records = $rch->fetchAll(PDO::FETCH_ASSOC);
+$sth = $dbh->query("SELECT * FROM tblpersone;");
+$records = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 $pagMax = ceil(count($records)/ $elemPerPag);
 if($pag > $pagMax) $pag = $pagMax;
@@ -67,7 +67,7 @@ if($pag < 1) $pag = 1;
         <span data-toggle="modal" data-target="#entryForm" data-scopo="'.'">
             <button type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="left" title="Modifica"><i class="fas fa-edit"></i></button>
         </span>
-        <span data-toggle="modal" data-target="#confermaEliminazione" data-scopo="'.'">
+        <span data-toggle="modal" data-target="#confermaEliminazione" data-scopo="'.$record['Idpersona'].'">
             <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="right" title="Elimina"><i class="fas fa-trash"></i></button>
         </span>
     </td>
@@ -84,19 +84,23 @@ if($pag < 1) $pag = 1;
     <button id="addEntry" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#entryForm"
         data-scopo="new"><i class="fas fa-plus"></i> </button>
     <!--  bottone del paginatore-->
-    <button id="sortCollapsed" type="button" class="btn btn-outline-dark"><?php echo $pag; ?></button>
+    <button id="sortCollapsed" type="button" class="btn btn-outline-dark">
+        <?php echo $pag; ?></button>
     <!--Istanziazione del paginatore-->
     <div id="sortExpanded">
         <a href="index.php?p=1&e=<?php echo $elemPerPag; ?>"><button type="button" id="firstPage" class="btn btn-outline-dark navigation">&laquo;</button></a>
-        <a href="index.php?p=<?php echo ($pag > 1  ? $pag - 1 : 1); ?>&e=<?php echo $elemPerPag; ?>"><button type="button" id="previousPage" class="btn btn-outline-dark navigation expandedButton">&lt;</button></a>
+        <a href="index.php?p=<?php echo ($pag > 1  ? $pag - 1 : 1); ?>&e=<?php echo $elemPerPag; ?>"><button type="button"
+                id="previousPage" class="btn btn-outline-dark navigation expandedButton">&lt;</button></a>
         <?php
             for($i = $pag - 2; $i <= $pag + 2; $i++) {
                 if($i != $pag && $i > 0 && $i <= $pagMax)
                     echo '<a href="index.php?p='.$i.'&e='.$elemPerPag.'"><button type="button" class="btn btn-outline-dark navigation expandedButton pageButton">'.$i.'</button></a>';
             }
         ?>
-        <a href="index.php?p=<?php echo ($pag < $pagMax ? $pag + 1 : $pag); ?>&e=<?php echo $elemPerPag; ?>"><button type="button" id="nextPage" class="btn btn-outline-dark navigation expandedButton">&gt;</button></a>
-        <a href="index.php?p=<?php echo $pagMax; ?>&e=<?php echo $elemPerPag; ?>"><button type="button" id="lastPage" class="btn btn-outline-dark navigation">&raquo;</button></a>
+        <a href="index.php?p=<?php echo ($pag < $pagMax ? $pag + 1 : $pag); ?>&e=<?php echo $elemPerPag; ?>"><button
+                type="button" id="nextPage" class="btn btn-outline-dark navigation expandedButton">&gt;</button></a>
+        <a href="index.php?p=<?php echo $pagMax; ?>&e=<?php echo $elemPerPag; ?>"><button type="button" id="lastPage"
+                class="btn btn-outline-dark navigation">&raquo;</button></a>
     </div>
 
     <!--Istanziazione research bar-->
@@ -123,7 +127,8 @@ if($pag < 1) $pag = 1;
                             <label class="col-3 col-form-label">Nome</label>
                             <div class="col-7">
                                 <!--inserisce la textbox  e controlla che i campi non siano vuoti o con valori non accettabili -->
-                                <input type="text" class="form-control" id="nome" minlength="2" maxlength="30" pattern="[a-zA-Z .']+" required>
+                                <input type="text" class="form-control" id="nome" minlength="2" maxlength="30" pattern="[a-zA-Z .']+"
+                                    required>
                                 <div class="invalid-feedback">
                                     Inserisci un nome valido.
                                 </div>
@@ -132,8 +137,9 @@ if($pag < 1) $pag = 1;
                         <div class="form-group row justify-content-between">
                             <label class="col-3 col-form-label">Cognome</label>
                             <div class="col-7">
-                                <!--inserisce la textbox  e controlla che i campi non siano vuoti o con valori non accettabili --> 
-                                <input type="text" class="form-control" id="cognome" minlength="2" maxlength="30" pattern="[a-zA-Z .']+" required>
+                                <!--inserisce la textbox  e controlla che i campi non siano vuoti o con valori non accettabili -->
+                                <input type="text" class="form-control" id="cognome" minlength="2" maxlength="30"
+                                    pattern="[a-zA-Z .']+" required>
                                 <div class="invalid-feedback">
                                     Inserisci un cognome valido.
                                 </div>
@@ -194,21 +200,14 @@ if($pag < 1) $pag = 1;
                 </div>
                 <div class="modal-body">
                     Sicuro di voler eliminare questa riga?
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td id="delNome"></td>
-                                <td id="delCognome"></td>
-                                <td id="delNascita"></td>
-                                <td id="delReddito"></td>
-                                <td id="delSesso"></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger delete" data-dismiss="modal">Sì</button>
+                    <form action="elimina_riga.php" method="POST">
+                        <input id="rigaDaEliminare" type="hidden" name="id">
+                        <input type="hidden" name="params" value='<?php echo http_build_query($_GET); ?>'>
+                        <button type="submit" class="btn btn-danger delete">Sì</button>
+                    </form>
                 </div>
             </div>
         </div>
